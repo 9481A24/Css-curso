@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Treino de Posição e Tamanho</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+    }
+
+    /* 🟦 CONTAINER DA IMAGEM */
+    .image-container {
+      position: relative;
+      width: 90%;        /* ✅ AQUI MUDA A LARGURA DA IMAGEM (ex: 100%, 600px, etc) */
+      height: 400px;      /* ✅ AQUI MUDA A ALTURA DA IMAGEM (ex: 300px, auto, etc) */
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    /* 🟧 IMAGEM EM SI */
+    .image-container img {
+      width: 100%;        /* ✅ A IMAGEM OCUPA TODA A LARGURA DO CONTAINER */
+      height: 100%;       /* ✅ A IMAGEM OCUPA TODA A ALTURA DEFINIDA ACIMA */
+      object-fit: cover;  /* Corta a imagem proporcional */
+      display: block;
+    }
+
+    /* 🟨 TEXTO EM CIMA DA IMAGEM */
+    .image-text {
+      position: absolute;
+      top: 50%;            /* ✅ AQUI VOCÊ MOVE O TEXTO PRA CIMA ou PRA BAIXO (ex: 40%, 60%) */
+      left: 50%;           /* ✅ AQUI VOCÊ MOVE O TEXTO PRA ESQUERDA ou DIREITA */
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 28px;     /* ✅ TAMANHO DA LETRA */
+      font-weight: bold;
+      text-shadow: 1px 1px 5px black;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <img src="https://source.unsplash.com/tMHAmxLyzvA" alt="Exemplo de fundo">
+    <div class="image-text">🧱 Tio Tnesse aBem</div>
+  </div>
+
+</body>
+</html>
 

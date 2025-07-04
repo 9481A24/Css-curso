@@ -1,69 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Monitor de IPs Fixos</title>
+  <title>Descobrir IP Local</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f7f7f7;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #f2f2f2;
     }
-
-    h1 {
-      color: #333;
-    }
-
-    .ip-status {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    .online {
+    #ip {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
       color: green;
-      font-weight: bold;
-    }
-
-    .offline {
-      color: red;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <h1>🔍 Monitor de IPs Fixos</h1>
-  <div id="lista-ips"></div>
+  <h1>🔍 Seu IP Local é:</h1>
+  <div id="ip">Carregando...</div>
 
   <script>
-    const ips = [
-      "https://8.8.8.8",     // Google DNS
-      "http://1.1.1.1",      // Cloudflare DNS
-      "http://192.168.0.1",  // Gateway local (exemplo)
-      // adicione mais IPs aqui
-    ];
+    async function getLocalIP() {
+      const pc = new RTCPeerConnection({iceServers: []});
+      pc.createDataChannel("");
 
-    const container = document.getElementById("lista-ips");
+      pc.onicecandidate = event => {
+        if (!event || !event.candidate) return;
+        const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
+        const ipMatch = event.candidate.candidate.match(ipRegex);
+        if (ipMatch) {
+          document.getElementById("ip").textContent = ipMatch[1];
+          pc.close();
+        }
+      };
 
-    ips.forEach(ip => {
-      const item = document.createElement("div");
-      item.className = "ip-status";
-      item.innerText = `🔄 Verificando ${ip}...`;
-      container.appendChild(item);
+      await pc.createOffer().then(offer => pc.setLocalDescription(offer));
+    }
 
-      fetch(ip, { mode: 'no-cors' }) // 'no-cors' evita erro de CORS, mas não garante status HTTP
-        .then(() => {
-          item.innerHTML = `✅ ${ip} está <span class="online">Online</span>`;
-        })
-        .catch(() => {
-          item.innerHTML = `❌ ${ip} está <span class="offline">Offline</span>`;
-        });
-    });
+    getLocalIP();
   </script>
-
 </body>
 </html>
 

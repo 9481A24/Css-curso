@@ -1,115 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Estilo com Imagens</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- IMPORTA FONTE BONITA IGUAL AO EXEMPLO DA KINSTA -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-
+  <title>Monitor de IPs Fixos</title>
   <style>
-    /* ESTILOS GERAIS DO SITE */
     body {
-      margin: 0;
-      background-color: #fefefe; /* Fundo branco claro */
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f7f7f7;
     }
 
-    /* CABEÇALHO COM A FRASE ESTILOSA */
-    .titulo-estiloso {
-      text-align: center;
-      padding: 40px 20px;
-      font-family: 'Playfair Display', serif; /* Fonte bonita igual do site Kinsta */
-      color: #111;
-      background-color: #fefefe;
+    h1 {
+      color: #333;
     }
 
-    /* TAMANHO E ESPAÇAMENTO DO TÍTULO */
-    .titulo-estiloso h1 {
-      font-size: 2.4em;
-      font-weight: 500;
-      line-height: 1.4;
+    .ip-status {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
 
-    /* GALERIA QUE CONTÉM AS IMAGENS */
-    .galeria {
-      display: flex;
-      flex-direction: column;  /* Imagens em coluna (uma embaixo da outra) */
-      align-items: center;     /* Centraliza no meio da tela */
-      gap: 30px;               /* Espaço entre as imagens */
-      padding: 40px 20px;
-    }
-
-    /* CONTAINER DE CADA IMAGEM COM TEXTO */
-    .image-container {
-      position: relative;             /* Permite posicionar texto em cima da imagem */
-      max-width: 360px;               /* Largura máxima da imagem */
-      width: 100%;
-      border-radius: 12px;            /* Arredonda cantos */
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); /* Sombra da imagem */
-    }
-
-    /* ESTILO DA IMAGEM DENTRO DO CONTAINER */
-    .image-container img {
-      width: 100%;   /* Imagem ocupa 100% da largura do container */
-      height: auto;  /* Altura automática para manter proporção */
-      display: block;
-    }
-
-    /* TEXTO EM CIMA DA IMAGEM */
-    .image-text {
-      position: absolute;              /* Posicionamento livre dentro do container */
-      bottom: 10px;                    /* Distância da parte de baixo */
-      left: 50%;                       /* Centraliza na horizontal */
-      transform: translateX(-50%);     /* Ajuste fino do centro */
-      color: white;
-      background: rgba(0, 0, 0, 0.6);  /* Fundo escuro com transparência */
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 1em;
+    .online {
+      color: green;
       font-weight: bold;
-      z-index: 2;                      /* Fica acima da imagem */
+    }
+
+    .offline {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- FRASE DE TÍTULO NO TOPO DO SITE -->
-  <section class="titulo-estiloso">
-    <h1>Estilo de imagem CSS: Aprimorando o Apelo Visual com Estilo</h1>
-  </section>
+  <h1>🔍 Monitor de IPs Fixos</h1>
+  <div id="lista-ips"></div>
 
-  <!-- GALERIA DE IMAGENS COM TEXTO EM CIMA -->
-  <section class="galeria">
+  <script>
+    const ips = [
+      "https://8.8.8.8",     // Google DNS
+      "http://1.1.1.1",      // Cloudflare DNS
+      "http://192.168.0.1",  // Gateway local (exemplo)
+      // adicione mais IPs aqui
+    ];
 
-  
+    const container = document.getElementById("lista-ips");
 
-  
-    <!-- BLOCO 1 -->
-<div class="image-container">
-  <img src="https://raw.githubusercontent.com/9481A24/Azulejistaprofissional/main/48X48-ESTATUARIO-polished-porcelain-tile.jpg" alt="Imagem 1">
-  <div class="image-text">🧱 Porcelanato Lastra 1,20x2,60</div>
-</div>
+    ips.forEach(ip => {
+      const item = document.createElement("div");
+      item.className = "ip-status";
+      item.innerText = `🔄 Verificando ${ip}...`;
+      container.appendChild(item);
 
-<!-- BLOCO 2 -->
-<div class="image-container">
-  <img src="https://raw.githubusercontent.com/9481A24/Azulejistaprofissional/main/48X48-ESTATUARIO-polished-porcelain-tile.jpg" alt="Imagem 2">
-  <div class="image-text">🧱 Porcelanato Lastra 0,95x0,95</div>
-</div>
-
-<!-- BLOCO 3 -->
-<div class="image-container">
-  <img src="https://raw.githubusercontent.com/9481A24/Azulejistaprofissional/main/48X48-ESTATUARIO-polished-porcelain-tile.jpg" alt="Imagem 3">
- <div class="image-text">🛠️ Porcelanato Lastra 1,20x2,60</div>
-</div>
-
-
- 
-  </section>
+      fetch(ip, { mode: 'no-cors' }) // 'no-cors' evita erro de CORS, mas não garante status HTTP
+        .then(() => {
+          item.innerHTML = `✅ ${ip} está <span class="online">Online</span>`;
+        })
+        .catch(() => {
+          item.innerHTML = `❌ ${ip} está <span class="offline">Offline</span>`;
+        });
+    });
+  </script>
 
 </body>
 </html>
